@@ -20,6 +20,7 @@ async def on_ready():
 
     try:
         bot.tree.copy_global_to(guild=server)
+        bot.tree.clear_commands(guild=None)
         synced = await bot.tree.sync(guild=server)
         print(f"synced {len(synced)} commands")
     except Exception as e:
