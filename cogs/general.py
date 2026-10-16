@@ -8,7 +8,7 @@ class General(commands.Cog):
 
     # About command, tells users about partybot
     @app_commands.command(name="about", description="About PartyBot")
-    async def ping(self, interaction: discord.Interaction):
+    async def about(self, interaction: discord.Interaction):
         # create embed to make it look pretty
         embed = discord.Embed(
             title="About PartyBot",
@@ -17,6 +17,33 @@ class General(commands.Cog):
         )
         embed.set_author(name="PartyBot")
         # send the embed to the channel
+        await interaction.response.send_message(embed=embed)
+
+    @app_commands.command(name="help", description="Help with PartyBot")
+    async def help(self, interaction: discord.Interaction):
+        # use list of commands so i dont need to change the embed every time
+        commands = [
+            {
+                "command": "/about",
+                "description": "Get to know about PartyBot" 
+            },
+            {
+                "command": "/help",
+                "description": "This command! Tells you about all the commands"
+            }
+        ]
+        # convert the list into big text
+        commandtext = ""
+        for command in commands:
+            commandtext = commandtext + f"`{command["command"]}`\n{command["description"]}\n\n"
+        # again make embed
+        embed = discord.Embed(
+            title="Help",
+            description=f"These are all the commands you can use with partybot, and how to use them:\n\n{commandtext}",
+            color=discord.Color.red()
+        )
+        embed.set_author(name="PartyBot")
+        # send it
         await interaction.response.send_message(embed=embed)
 
 async def setup(bot):
