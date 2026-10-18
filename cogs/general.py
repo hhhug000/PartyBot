@@ -34,6 +34,10 @@ class General(commands.Cog):
             {
                 "command": "/rockpaperscissors",
                 "description": "Play Rock Paper Scissors againt PartyBot"
+            },
+            {
+                "command": "/dice",
+                "description": "Roll a dice"
             }
         ]
         # convert the list into big text
