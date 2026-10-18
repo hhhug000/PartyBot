@@ -77,5 +77,35 @@ class General(commands.Cog):
         # send the embed
         await interaction.response.send_message(embed=embed)
 
+    @app_commands.command(name="leaderboard", description="Check the leaderboard")
+    async def leaderboard(self, interaction: discord.Interaction):
+        # defer stops it from timing out, so instead of send_message use followup
+        await interaction.response.defer()
+        # Get leaderboard from db
+        leaderboard = stats.get_leaderboard()
+        leaderboardtext = ""
+        for i, (user_id, score) in enumerate(leaderboard):
+            try:
+                # fetch the user
+                user = await self.bot.fetch_user(user_id)
+                username = user.name
+            except (discord.NotFound, discord.HTTPException):
+                # this is for when user accounts are deleted
+                username = f"Unknown User ({user_id})"
+            leaderboardtext += f"{i+1}. {username}: {score} points\n"
+        if not leaderboardtext:
+            leaderboardtext = "No scores recorded yet!"
+
+        # make embed
+        embed = discord.Embed(
+            title="Leaderboard",
+            description=f"The top 5 users are\n{leaderboardtext}",
+            color=discord.Color.red()
+        )
+        embed.set_author(name="PartyBot")
+        
+        # send the embed
+        await interaction.followup.send(embed=embed)
+
 async def setup(bot):
     await bot.add_cog(General(bot))

@@ -26,6 +26,12 @@ def add_score(user_id, score):
             cursor.execute("UPDATE scores SET score = score + ? WHERE user_id = ?", (score, user_id))
             conn.commit()
 
+def get_leaderboard():
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT user_id, score FROM scores ORDER BY score DESC LIMIT 5")
+        return cursor.fetchall()
+
 def get_score(user_id):
     with get_db() as conn:
         cursor = conn.cursor()
