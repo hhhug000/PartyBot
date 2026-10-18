@@ -1,7 +1,7 @@
 import sqlite3
 from contextlib import contextmanager
 
-db = "partbot.db"
+db = "partybot.db"
 
 @contextmanager
 def get_db():
@@ -17,12 +17,14 @@ def get_db():
 def add_score(user_id, score):
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("GET user_id FROM scores WHERE user_id = ?", (user_id,))
+        cursor.execute("SELECT user_id FROM scores WHERE user_id = ?", (user_id,))
         result = cursor.fetchone()
         if result is None:
             cursor.execute("INSERT INTO scores (user_id, score) VALUES (?, ?)", (user_id, score))
+            conn.commit()
         else:
             cursor.execute("UPDATE scores SET score = score + ? WHERE user_id = ?", (score, user_id))
+            conn.commit()
 
 def get_score(user_id):
     with get_db() as conn:

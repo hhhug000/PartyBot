@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import asyncio
 from discord.ext import commands
+import stats
 
 load_dotenv()
 
@@ -37,4 +38,5 @@ async def main():
         await load_extensions()
         await bot.start(token)
 
+stats.setup_db()
 asyncio.run(main())
