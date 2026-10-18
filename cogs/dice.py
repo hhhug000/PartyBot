@@ -28,5 +28,18 @@ class Dice(commands.Cog):
         # send the embed to the channel
         await interaction.response.send_message(embed=embed)
 
+    @app_commands.command(name="coinflip", description="Flip a coin")
+    async def coinflip(self, interaction: discord.Interaction):
+        flip = random.choice(["Heads", "Tails"])
+        # pretty embed
+        embed = discord.Embed(
+            title="Coin Flip",
+            description=f"You flipped a coin and got {flip}",
+            color=discord.Color.red()
+        )
+        embed.set_author(name="PartyBot")
+        # send it
+        await interaction.response.send_message(embed=embed)
+
 async def setup(bot):
     await bot.add_cog(Dice(bot))
