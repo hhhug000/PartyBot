@@ -1,4 +1,7 @@
+import os
+import random
 import sqlite3
+import json
 from contextlib import contextmanager
 
 db = "partybot.db"
@@ -50,3 +53,28 @@ def setup_db():
                 score INTEGER NOT NULL
             )
         """)
+
+def get_trivia_categories():
+    files = os.listdir("trivia-dataset")
+    for i, file in enumerate(files):
+        files[i] = file.replace(".json", "")
+    return files
+
+def get_trivia_questions(category):
+    with open(f"trivia-dataset/{category}.json", "r", encoding="utf-8") as f:
+        data = f.read()
+        questions = json.loads(data)
+        valid_questions = [
+            question
+            for question in questions
+            if question.get("question")
+            and question.get("answer") in question.get("choices", [])
+            and 2 <= len(question.get("choices", [])) <= 4
+        ]
+        if not valid_questions:
+            raise ValueError(f"No valid trivia questions found for category: {category}")
+        question = random.choice(valid_questions)
+        questiontext = question["question"]
+        answer = question["answer"]
+        possibleanswers = question["choices"]
+        return questiontext, answer, possibleanswers
