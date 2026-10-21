@@ -17,12 +17,9 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f"Logged in as {bot.user}")
 
-    server = discord.Object(id=1461080207288041505)
 
     try:
-        bot.tree.copy_global_to(guild=server)
-        bot.tree.clear_commands(guild=None)
-        synced = await bot.tree.sync(guild=server)
+        synced = await bot.tree.sync()
         print(f"synced {len(synced)} commands")
     except Exception as e:
         print(f"Failed to sync commands, error: {e}")
