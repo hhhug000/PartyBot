@@ -43,6 +43,18 @@ class General(commands.Cog):
             {
                 "command": "/coinflip",
                 "description": "Flip a coin"
+            },
+            {
+                "command": "/trivia",
+                "description": "Play some trivia"
+            },
+            {
+                "command": "/score",
+                "description": "Check your (or someone elses) score"
+            },
+            {
+                "command": "/leaderboard",
+                "description": "Check the worldwide leaderboard for PartyBot"
             }
         ]
         # convert the list into big text
